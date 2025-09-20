@@ -6,7 +6,10 @@ on:
 
 jobs:
   build:
+    name: Build React App
     runs-on: ubuntu-latest
+    outputs:
+      build-path: ./build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,10 +25,11 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build React App
+      - name: Build app
         run: npm run build
 
-  deploy-dev:  # ✅ Correctly indented under jobs
+  deploy-dev:
+    name: Deploy Dev Branch
     needs: build
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
@@ -33,7 +37,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
@@ -44,9 +48,36 @@ jobs:
       - name: Build React App
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (dev)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
           destination_dir: dev
+
+  deploy-main:
+    name: Deploy Main Branch
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React App
+        run: npm run build
+
+      - name: Deploy to GitHub Pages (main)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          # main branch deploys to root
