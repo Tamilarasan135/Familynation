@@ -27,10 +27,20 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      # Deploy Dev branch to /dev folder
+      - name: Deploy Dev branch
+        if: github.ref == 'refs/heads/dev'
         uses: peaceiris/actions-gh-pages@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
+          destination_dir: dev
+
+      # Deploy Main branch to root (production)
+      - name: Deploy Main branch
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
 git add .github/workflows/deploy-gh-pages.yml
