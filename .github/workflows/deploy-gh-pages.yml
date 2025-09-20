@@ -1,7 +1,7 @@
+name: CI/CD Deploy React App
+
 on:
   push:
-    branches: ["main", "dev"]
-  pull_request:
     branches: ["main", "dev"]
 
 jobs:
@@ -11,26 +11,41 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
+
+      - name: Run tests
+        run: npm test
 
       - name: Build React App
         run: npm run build
 
   deploy-dev:
-    needs: build
-    if: github.ref == 'refs/heads/dev'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Development
-        run: |
-          echo "Deploying to Dev environment..."
-          # Example for Vercel:
-          npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --confirm
-          # Or for Netlify:
-          # npx netlify deploy --dir=build --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
+  needs: build
+  if: github.ref == 'refs/heads/dev'
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build React App
+      run: npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
