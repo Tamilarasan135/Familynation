@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Familynation/static/css/main.d65597ba.css",
+    "main.js": "/Familynation/static/js/main.2152274b.js",
+    "static/js/453.3fb5e523.chunk.js": "/Familynation/static/js/453.3fb5e523.chunk.js",
+    "index.html": "/Familynation/index.html",
+    "main.d65597ba.css.map": "/Familynation/static/css/main.d65597ba.css.map",
+    "main.2152274b.js.map": "/Familynation/static/js/main.2152274b.js.map",
+    "453.3fb5e523.chunk.js.map": "/Familynation/static/js/453.3fb5e523.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d65597ba.css",
+    "static/js/main.2152274b.js"
+  ]
+}
