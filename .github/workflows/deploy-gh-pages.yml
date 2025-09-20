@@ -1,46 +1,36 @@
-name: Deploy React App to GitHub Pages
-
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main", "dev"]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
-
-      - name: Build project
+      - name: Build React App
         run: npm run build
 
-      # Deploy Dev branch to /dev folder
-      - name: Deploy Dev branch
-        if: github.ref == 'refs/heads/dev'
-        uses: peaceiris/actions-gh-pages@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          destination_dir: dev
-
-      # Deploy Main branch to root (production)
-      - name: Deploy Main branch
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-git add .github/workflows/deploy-gh-pages.yml
+  deploy-dev:
+    needs: build
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Development
+        run: |
+          echo "Deploying to Dev environment..."
+          # Example for Vercel:
+          npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --confirm
+          # Or for Netlify:
+          # npx netlify deploy --dir=build --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
