@@ -23,7 +23,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "deploy:dev": "gh-pages -d build -b gh-pages -r https://github.com/Tamilarasan135/Familynation.git -f dev"
+"deploy:dev": "gh-pages -d build -b gh-pages -r https://github.com/Tamilarasan135/Familynation.git -f dev"
 
   },
   "homepage": "https://Tamilarasan135.github.io/Familynation",
