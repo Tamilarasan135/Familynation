@@ -12,12 +12,21 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "tailwindcss": "^3.4.17"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+"deploy:dev": "gh-pages -d build -b gh-pages -r https://github.com/Tamilarasan135/Familynation.git -f dev"
+
   },
+  "homepage": "https://Tamilarasan135.github.io/Familynation",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -35,8 +44,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.17"
   }
 }
